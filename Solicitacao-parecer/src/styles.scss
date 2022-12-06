@@ -12,33 +12,42 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 
-/* Global */ 
+/* Global */
 
 @import "./assets/layout/styles/variables.css";
 
 *:not(ul, p) {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-*::after, *::before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 *::-webkit-scrollbar {
-    width: 18px;
-    background-color: #e7e7e7;
+  width: 18px;
+  background-color: #e7e7e7;
 }
 
 ::-webkit-scrollbar-thumb {
-    border-radius: 50px;
-    border: 4px solid #e7e7e7;
-    background-color: #cecece;
+  border-radius: 50px;
+  border: 4px solid #e7e7e7;
+  background-color: #bebebe;
+  will-change: contents;
+  &:hover {
+    background-color: #a6bbaf;
+  }
+  &:active {
+    background-color: var(--primary-color);
+  }
 }
 
-html, body {
-    overflow-x: hidden;
+html,
+body {
+  overflow-x: hidden;
 }
