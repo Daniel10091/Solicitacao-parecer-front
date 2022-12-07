@@ -11,8 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FormularioComponent } from './components/formulario/formulario.component';
 import { InstrucoesComponent } from './components/instrucoes/instrucoes.component';
-import { InputMaskModule } from 'primeng/inputmask';
 import { ButtonModule } from 'primeng/button';
+import { InputMaskModule } from 'primeng/inputmask';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ButtonModule } from 'primeng/button';
     InputTextareaModule,
     HttpClientModule,
     ButtonModule,
-    InputMaskModule
+    InputMaskModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

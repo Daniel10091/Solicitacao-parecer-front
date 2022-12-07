@@ -16,7 +16,7 @@ export class EnderecoService {
 
   constructor(private httpClient: HttpClient) { }
 
-  consultarEnderecoCEP(cep: string) {
+  buscaEnderecoCEP(cep: string) {
     const options = {
       method: 'GET',
       mode: 'cors',
@@ -24,7 +24,7 @@ export class EnderecoService {
         'content-type': 'application/json;charset=utf-8',
       }
     }
-    return this.httpClient.get<any>(`${this.appBaseUrl}/consultar-endereco/${cep}`, options);
+    return this.httpClient.get<any>(`${this.appBaseUrl}/busca-endereco/${cep}`, options);
   }
 
   public enviarSolicitacao(solicitacao: Solicitacao): Observable<Solicitacao> {

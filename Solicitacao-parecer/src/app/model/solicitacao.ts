@@ -4,6 +4,6 @@ export class Solicitacao {
   assunto?: string;
   mensagem?: string;
   justificativa?: string;
-  arquivo?: BinaryType[];
+  arquivo?: any;
   solicitante?: Solicitante;
 }
