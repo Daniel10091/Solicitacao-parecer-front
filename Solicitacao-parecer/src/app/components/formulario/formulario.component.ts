@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { selectModel } from 'src/app/model/dropdown';
-import { Endereco } from 'src/app/model/endereco';
 import { Solicitacao } from 'src/app/model/solicitacao';
 import { EnderecoService } from 'src/app/service/endereco.service';
 import { EnviarSolicitacoService } from 'src/app/service/enviar-solicitaco.service';
@@ -15,7 +14,7 @@ import { EnviarSolicitacoService } from 'src/app/service/enviar-solicitaco.servi
 export class FormularioComponent implements OnInit {
 
   @Input()
-  endereco: Endereco = new Endereco();
+  solicitacao: Solicitacao = new Solicitacao();
 
   dropdownUf: selectModel[];
   dropdownEstado: selectModel[];
@@ -105,16 +104,18 @@ export class FormularioComponent implements OnInit {
   }
   
   consultaEndereco() {
-    if (this.endereco.cep.replace(/[^0-9]+/g, '').length == 8) {
+    var endereco = this.solicitacao.solicitante.endereco;
+    
+    if (endereco.cep.replace(/[^0-9]+/g, '').length == 8) {
       this.visible = "flex";
-      this.enderecoService.buscaEnderecoCEP(this.endereco.cep.replace(/[^0-9]+/g, ''))
+      this.enderecoService.buscaEnderecoCEP(endereco.cep.replace(/[^0-9]+/g, ''))
       .subscribe({
         next: (data) => {
-            this.endereco.cep = data.cep;
-            this.endereco.logradouro = data.logradouro;
-            this.endereco.bairro = data.bairro;
-            this.endereco.estado = data.uf;
-            this.endereco.cidade = data.localidade;
+            endereco.cep = data.cep;
+            endereco.logradouro = data.logradouro;
+            endereco.bairro = data.bairro;
+            endereco.estado = data.uf;
+            endereco.cidade = data.localidade;
             this.selectedEstado = {
               name: data.uf,
               code: data.uf
@@ -128,8 +129,10 @@ export class FormularioComponent implements OnInit {
   }
 
   public enviarSolicitacao(addForm: NgForm): void {
+
+    this.solicitacao.solicitante.crm = this.selectedUf.name;
     
-    this.enviarSolicitacaoService.enviarSolicitacao(addForm.value).subscribe(
+    this.enviarSolicitacaoService.enviarSolicitacao(this.solicitacao).subscribe(
       (response: Solicitacao) => {
         console.log(response);
         

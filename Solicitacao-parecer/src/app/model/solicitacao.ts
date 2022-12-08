@@ -5,5 +5,5 @@ export class Solicitacao {
   mensagem?: string;
   justificativa?: string;
   arquivo?: any;
-  solicitante?: Solicitante;
+  solicitante?: Solicitante = new Solicitante();
 }

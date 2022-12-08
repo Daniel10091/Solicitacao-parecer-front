@@ -18,11 +18,11 @@
         <div class="form-row row">
           <div class="field col-7">
             <label for="name">Nome Completo:</label>
-            <input type="name" pInputText name="name" required>
+            <input type="name" pInputText name="name" [(ngModel)]="solicitacao.solicitante.nome" required>
           </div>
           <div class="field col-3">
             <label for="crm">Nº do CRM:</label>
-            <input type="text" pInputText name="crm" required>
+            <input type="text" pInputText name="crm" [(ngModel)]="solicitacao.solicitante.crm" required>
           </div>
           <div class="field col-2">
             <label htmlFor="state">UF:</label>
@@ -32,11 +32,11 @@
         <div class="form-row row">
           <div class="field col-4 ">
             <label for="cpf">CPF:</label>
-            <input type="text" pInputText name="cpf">
+            <input type="text" pInputText name="cpf" [(ngModel)]="solicitacao.solicitante.cpf">
           </div>
           <div class="field col-8 ">
             <label for="email">Email:</label>
-            <input type="email" pInputText name="email">
+            <input type="email" pInputText name="email" [(ngModel)]="solicitacao.solicitante.email">
           </div>
         </div>
       </div>
@@ -53,27 +53,27 @@
         <div class="form-row row">
           <div class="field col-3">
             <label htmlFor="zip">CEP:</label>
-            <p-inputMask mask="99999-999" name="cep" [(ngModel)]="endereco.cep" (onComplete)="consultaEndereco()"></p-inputMask>
+            <p-inputMask mask="99999-999" name="cep" [(ngModel)]="solicitacao.solicitante.endereco.cep" (onComplete)="consultaEndereco()"></p-inputMask>
           </div>
         </div>
         <div class="form-row row">
           <div class="field col-6">
             <label htmlFor="logradouro">Logradouro:</label>
-            <input pInputTextarea id="logradouro" rows="4" name="logradouro" [(ngModel)]="endereco.logradouro">
+            <input pInputTextarea id="logradouro" rows="4" name="logradouro" [(ngModel)]="solicitacao.solicitante.endereco.logradouro">
           </div>
           <div class="field col-2">
             <label for="numero">Número:</label>
-            <input type="text" pInputText name="numero" [(ngModel)]="endereco.numero">
+            <input type="text" pInputText name="numero" [(ngModel)]="solicitacao.solicitante.endereco.numero">
           </div>
           <div class="field col-4">
             <label for="bairro">Bairro:</label>
-            <input type="text" pInputText name="bairro" [(ngModel)]="endereco.bairro">
+            <input type="text" pInputText name="bairro" [(ngModel)]="solicitacao.solicitante.endereco.bairro">
           </div>
         </div>
         <div class="form-row row">
           <div class="field col-12">
             <label htmlFor="complemento">Complemento:</label>
-            <input pInputTextarea id="complemento" rows="4" name="complemento" [(ngModel)]="endereco.logradouro">
+            <input pInputTextarea id="complemento" rows="4" name="complemento" [(ngModel)]="solicitacao.solicitante.endereco.logradouro">
           </div>
         </div>
         <div class="form-row row">
@@ -82,7 +82,7 @@
             <div>
               <p-dropdown [options]="dropdownEstado" optionLabel="name" name="estado" [(ngModel)]="selectedEstado"></p-dropdown>
               <p-dropdown [options]="dropdownCidade" [(ngModel)]="selectedCidade" name="cidade" optionLabel="name" [filter]="true" filterBy="name"
-                [showClear]="true" placeholder="nada">
+                [showClear]="true" placeholder="Seleção de cidades">
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value" *ngIf="selectedCidade">
                     <div>{{selectedCidade.name}}</div>
@@ -100,11 +100,11 @@
         <div class="form-row row">
           <div class="field col-4">
             <label for="bairro">Telefone Residencial:</label>
-            <p-inputMask mask="(99)9999-9999" name="telefone" [(ngModel)]="endereco.telefone"></p-inputMask>
+            <p-inputMask mask="(99)9999-9999" name="telefone" [(ngModel)]="solicitacao.solicitante.endereco.telefone"></p-inputMask>
           </div>
           <div class="field col-4">
             <label for="bairro">Celular:</label>
-            <p-inputMask mask="(99)99999-9999" name="celular" [(ngModel)]="endereco.celular"></p-inputMask>
+            <p-inputMask mask="(99)99999-9999" name="celular" [(ngModel)]="solicitacao.solicitante.endereco.celular"></p-inputMask>
           </div>
         </div>
       </div>
@@ -117,19 +117,19 @@
         <div class="form-row">
           <div class="field col-12">
             <label for="asssunto">Assunto:</label>
-            <input type="text" pInputText name="asssunto">
+            <input type="text" pInputText name="asssunto" [(ngModel)]="solicitacao.assunto">
           </div>
         </div>
         <div class="form-row">
           <div class="field col-12">
             <label for="asssunto">Mensagem:</label>
-            <textarea rows="5" cols="auto" name="mensagem" pInputTextarea></textarea>
+            <textarea rows="5" cols="auto" name="mensagem" [(ngModel)]="solicitacao.mensagem" pInputTextarea></textarea>
           </div>
         </div>
         <div class="form-row">
           <div class="field col-12">
             <label for="asssunto">Justificativa:</label>
-            <textarea rows="5" cols="auto" name="justificativa" pInputTextarea></textarea>
+            <textarea rows="5" cols="auto" name="justificativa" [(ngModel)]="solicitacao.justificativa" pInputTextarea></textarea>
           </div>
         </div>
       </div>
