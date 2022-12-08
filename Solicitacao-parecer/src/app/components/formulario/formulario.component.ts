@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { selectModel } from 'src/app/model/dropdown';
-import { Endereco } from 'src/app/model/endereco';
 import { Solicitacao } from 'src/app/model/solicitacao';
 import { EnderecoService } from 'src/app/service/endereco.service';
 import { EnviarSolicitacoService } from 'src/app/service/enviar-solicitaco.service';
@@ -15,7 +14,7 @@ import { EnviarSolicitacoService } from 'src/app/service/enviar-solicitaco.servi
 export class FormularioComponent implements OnInit {
 
   @Input()
-  endereco: Endereco = new Endereco();
+  solicitacao: Solicitacao = new Solicitacao();
 
   dropdownUf: selectModel[];
   dropdownEstado: selectModel[];
@@ -99,27 +98,36 @@ export class FormularioComponent implements OnInit {
     inputFile.onchange = (e: any) => {
       this.uploadedFiles.push(e.target.files[0]);
       this.fileName = e.target.files[0].name;
+      this.solicitacao.arquivo = e.target.files[0];
+      console.log(this.solicitacao.arquivo);
+      
     }
 
     inputFile.remove();
   }
+
+  private uploadArquivo(arquivo: File) {
+    const formData = new FormData();
+    formData.append("arquivo", arquivo);
+  }
   
   consultaEndereco() {
-    if (this.endereco.cep.replace(/[^0-9]+/g, '').length == 8) {
+    var endereco = this.solicitacao.solicitante.endereco;
+    
+    if (endereco.cep.replace(/[^0-9]+/g, '').length == 8) {
       this.visible = "flex";
-      this.enderecoService.buscaEnderecoCEP(this.endereco.cep.replace(/[^0-9]+/g, ''))
+      this.enderecoService.buscaEnderecoCEP(endereco.cep.replace(/[^0-9]+/g, ''))
       .subscribe({
         next: (data) => {
-            this.endereco.cep = data.cep;
-            this.endereco.logradouro = data.logradouro;
-            this.endereco.bairro = data.bairro;
-            this.endereco.estado = data.uf;
-            this.endereco.cidade = data.localidade;
+            endereco.cep = data.cep;
+            endereco.logradouro = data.logradouro;
+            endereco.bairro = data.bairro;
+            endereco.estado = data.uf;
+            endereco.cidade = data.localidade;
             this.selectedEstado = {
               name: data.uf,
               code: data.uf
             };
-            
           },
         complete : () => { this.visible = "none"; },
         error : () => { this.visible = "none"; }
@@ -127,18 +135,22 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  public enviarSolicitacao(addForm: NgForm): void {
+  public async enviarSolicitacao(addForm: NgForm) {
+
+    this.solicitacao.solicitante.crm = this.selectedUf.name;
     
-    this.enviarSolicitacaoService.enviarSolicitacao(addForm.value).subscribe(
-      (response: Solicitacao) => {
-        console.log(response);
+    let x = await this.enviarSolicitacaoService.enviarArquivo(this.solicitacao.arquivo).toPromise();
+    // this.enviarSolicitacaoService.enviarSolicitacao(this.solicitacao).subscribe(
+    //   (response: Solicitacao) => {
+    //     console.log(response);
+    //     console.log(this.solicitacao);
         
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-        addForm.reset();
-      }
-    );
+    //   },
+    //   (error: HttpErrorResponse) => {
+    //     alert(error.message);
+    //     addForm.reset();
+    //   }
+    // );
     
   }
 

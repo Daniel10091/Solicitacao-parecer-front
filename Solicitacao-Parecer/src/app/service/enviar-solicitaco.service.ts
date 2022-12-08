@@ -13,6 +13,10 @@ export class EnviarSolicitacoService {
 
   constructor(private httpClient: HttpClient) { }
 
+  public enviarArquivo(file: File): Observable<any> {
+    return this.httpClient.post<any>(`${this.apiServeUri}`, file);
+  }
+  
   public enviarSolicitacao(solicitacao: Solicitacao): Observable<Solicitacao> {
     return this.httpClient.post<Solicitacao>(`${this.apiServeUri}`, solicitacao);
   }

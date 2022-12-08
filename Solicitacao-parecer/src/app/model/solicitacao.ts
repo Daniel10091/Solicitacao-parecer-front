@@ -4,6 +4,6 @@ export class Solicitacao {
   assunto?: string;
   mensagem?: string;
   justificativa?: string;
-  arquivo?: any;
-  solicitante?: Solicitante;
+  arquivo?: File;
+  solicitante?: Solicitante = new Solicitante();
 }

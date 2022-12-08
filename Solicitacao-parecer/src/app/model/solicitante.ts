@@ -6,5 +6,5 @@ export class Solicitante {
   uf?: string;
   cpf?: string;
   email?: string;
-  endereco?: Endereco;
+  endereco?: Endereco = new Endereco();
 }
