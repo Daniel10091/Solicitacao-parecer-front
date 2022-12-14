@@ -24,7 +24,7 @@ export class FormularioComponent implements OnInit {
   selectedEstado: selectModel;
   selectedCidade: selectModel;
 
-  uploadedFiles: any[] = [];
+  uploadedFile: any;
   fileName: string = "";
 
   invalid = null;
@@ -96,19 +96,12 @@ export class FormularioComponent implements OnInit {
     inputFile.click();
 
     inputFile.onchange = (e: any) => {
-      this.uploadedFiles.push(e.target.files[0]);
+      // this.uploadedFiles.push(e.target.files[0]);
+      this.uploadedFile = e.target.files[0];
       this.fileName = e.target.files[0].name;
-      this.solicitacao.arquivo = e.target.files[0];
-      console.log(this.solicitacao.arquivo);
-      
     }
 
     inputFile.remove();
-  }
-
-  private uploadArquivo(arquivo: File) {
-    const formData = new FormData();
-    formData.append("arquivo", arquivo);
   }
   
   consultaEndereco() {
@@ -128,6 +121,7 @@ export class FormularioComponent implements OnInit {
               name: data.uf,
               code: data.uf
             };
+            
           },
         complete : () => { this.visible = "none"; },
         error : () => { this.visible = "none"; }
@@ -135,23 +129,59 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  public async enviarSolicitacao(addForm: NgForm) {
+  public enviarSolicitacao(addForm: NgForm): void {
 
-    this.solicitacao.solicitante.crm = this.selectedUf.name;
+    this.solicitacao.solicitante.uf = this.selectedUf.name;
     
-    let x = await this.enviarSolicitacaoService.enviarArquivo(this.solicitacao.arquivo).toPromise();
-    // this.enviarSolicitacaoService.enviarSolicitacao(this.solicitacao).subscribe(
-    //   (response: Solicitacao) => {
-    //     console.log(response);
-    //     console.log(this.solicitacao);
+    this.enviarSolicitacaoService.enviarSolicitacao(this.solicitacao).subscribe(
+      (response: Solicitacao) => {
+        console.log(response);
         
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     alert(error.message);
-    //     addForm.reset();
-    //   }
-    // );
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+        addForm.reset();
+      }
+    );
     
+  }
+  
+  formGroup: any;
+  informationForm: any;
+
+  public onSubmit(addForm: NgForm): void {
+
+    this.solicitacao.solicitante.uf = this.selectedUf.name;
+
+    const formData: FormData = new FormData();
+    formData.append('assunto', this.solicitacao.assunto);
+    formData.append('mensagem', this.solicitacao.mensagem);
+    formData.append('justificativa', this.solicitacao.justificativa);
+    formData.append('arquivo', this.uploadedFile);
+    formData.append('nome', this.solicitacao.solicitante.nome);
+    formData.append('crm', (this.solicitacao.solicitante.crm).toString());
+    formData.append('uf', this.solicitacao.solicitante.uf);
+    formData.append('cpf', this.solicitacao.solicitante.cpf);
+    formData.append('email', this.solicitacao.solicitante.email);
+    formData.append('cep', this.solicitacao.solicitante.endereco.cep);
+    formData.append('logradouro', this.solicitacao.solicitante.endereco.logradouro);
+    formData.append('numero', this.solicitacao.solicitante.endereco.numero);
+    formData.append('bairro', this.solicitacao.solicitante.endereco.bairro);
+    formData.append('estado', this.solicitacao.solicitante.endereco.estado);
+    formData.append('cidade', this.solicitacao.solicitante.endereco.cidade);
+    formData.append('telefone', this.solicitacao.solicitante.endereco.telefone);
+    formData.append('celular', this.solicitacao.solicitante.endereco.celular);
+
+    this.enviarSolicitacaoService.save(formData).subscribe(
+      (response: Solicitacao) => {
+        console.log(response);
+        addForm.reset();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+   
   }
 
 }
